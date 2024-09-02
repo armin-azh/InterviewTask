@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package com.interview.detection;
 
-import "services/proto/face.proto";
+import public "face.proto";
 
 message Config{
     bool hasHP = 1;

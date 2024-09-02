@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-package face;
 
 message Angle{
     float pitch = 1;
