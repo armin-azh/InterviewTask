@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
+	"interview.com/app/src/api"
 	"interview.com/app/src/common"
 )
 
@@ -29,17 +29,17 @@ func main() {
 		return 
 	}
 	
+	// Load configs
 	config, err := common.LoadConfig(cfgPath)
 	if err!=nil{
 		log.Error(err)
 		return
 	}
 
-	app:=fiber.New(fiber.Config{
-		AppName: "App Gateway Service",
-	})
+	// Create new server instances
+	server:=api.NewServer()
 
-	if err:= app.Listen(fmt.Sprintf("%s:%d", config.Host,config.Port));err!=nil{
+	if err:= server.Start(fmt.Sprintf("%s:%d", config.Host,config.Port));err!=nil{
 		log.Fatal("Cannot start server", err)
 	}
 }
