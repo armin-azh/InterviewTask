@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package com.interview.detection;
+
+import "services/proto/face.proto";
+
+message Config{
+    bool hasHP = 1;
+}
+
+message DetectSingleImageRequest{
+    bytes image = 1;
+    Config config = 2;
+}
+
+message DetectSingleImageResponse {
+    repeated Face faces = 1;
+}
+
+message DetectImagesReqeust{
+    repeated bytes images = 1;
+    Config config = 2;
+}
+message DetectImagesResponse{
+    repeated Face faces = 1;
+}
+
+service DetectionService {
+    rpc DetectSingleImage (DetectSingleImageRequest) returns (DetectSingleImageResponse) {}
+    rpc DetectImages (DetectImagesReqeust) returns (DetectImagesResponse) {}
+}
+
+
