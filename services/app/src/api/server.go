@@ -23,7 +23,7 @@ func NewServer() *Server{
 	// Enrollment
 	enroll := v1.Group("/enrollments")
 	enroll.Post("", server.createEnroll) // Create new enrollment
-	enroll.Get("", server.queryEnroll) // Get enrollments
+	enroll.Get("", server.getEnrollList) // Get enrollments
 	enroll.Get("/enrollment/:pk", server.getEnroll) // Get enrollment instance
 
 

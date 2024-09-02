@@ -17,6 +17,6 @@ func (server *Server) getEnroll (c *fiber.Ctx) error{
 }
 
 
-func (server *Server) queryEnroll (c *fiber.Ctx) error{
+func (server *Server) getEnrollList (c *fiber.Ctx) error{
 	return nil
 }
