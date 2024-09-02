@@ -17,6 +17,22 @@ func NewServer() *Server{
 		AppName: "App Gateway Service",
 	})
 
+	api := app.Group("/api")
+	v1 := api.Group("/v1")
+
+	// Enrollment
+	enroll := v1.Group("/enrollments")
+	enroll.Post("", server.createEnroll) // Create new enrollment
+	enroll.Get("", server.queryEnroll) // Get enrollments
+	enroll.Get("/enrollment/:pk", server.getEnroll) // Get enrollment instance
+
+
+	// Query
+	query := v1.Group("/queries")
+	query.Post("", server.createQuery) // Create new query
+	query.Get("", server.getQueryList) // Get query list
+	query.Get("/query/:pk", server.getQuery) // Get query instance 
+	
 	server.app = app
 
 	return server
