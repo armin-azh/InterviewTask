@@ -1,5 +1,6 @@
-onnxruntime-gpu~=1.16.1
-protobuf~=4.25.0
-opencv-python~=4.5.5.64
-grpcio~=1.66.1
-pillow~=10.4.0
+onnxruntime-gpu==1.16.1
+opencv-python==4.5.5.64
+grpcio==1.66.1
+grpcio-tools==1.66.1
+protobuf==5.27.2
+pillow==10.4.0
