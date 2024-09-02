@@ -1,3 +1,4 @@
 onnxruntime-gpu~=1.16.1
 protobuf~=4.25.0
 opencv-python~=4.5.5.64
+grpcio~=1.66.1
