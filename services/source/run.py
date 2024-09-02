@@ -1,23 +1,13 @@
 from argparse import ArgumentParser, Namespace
 
-import cv2
-
-import onnxruntime as ort
 def main(args: Namespace)->None:
 
-    
-    source = cv2.VideoCapture(0)
-
-    while source.isOpened():
-        ret,frame = source.read()
-        if not ret:
-            break
-
-        cv2.imshow('Main', frame)
-
-        cv2.waitKey(1)
+    pass
 
 
 if __name__ == '__main__':
     parser = ArgumentParser()
+    parser.add_argument('-gpu', help='Enable on gpu', action='store_true')
+    parser.add_argument('-host', help='Host name', type=str, default='0.0.0.0')
+    parser.add_argument('-port', help='Server Port number', type=int, default=8081)
     main(parser.parse_args())
