@@ -16,8 +16,11 @@ import logging
 
 from src.rpc import DetectionInferenceService
 from src.proto.detection_srv_pb2_grpc import add_DetectionServiceServicer_to_server
+from src.logger import setup_logging
 
-logging.basicConfig(level=logging.INFO)
+setup_logging()
+
+logger = logging.getLogger('runner')
 
 async def main(args: Namespace)->None:
 
@@ -28,7 +31,8 @@ async def main(args: Namespace)->None:
     address = f"[::]:{args.port}"
 
     server.add_insecure_port(address)
-
+    
+    logger.info(f"[📡] Starting server on {address}")
     await server.start()
     await server.wait_for_termination()
 
