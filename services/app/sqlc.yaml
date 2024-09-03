@@ -1,0 +1,18 @@
+version: "2"
+sql:
+- schema: "./src/db/migrations/main/"
+  queries: "./src/db/query/main/"
+  engine: "postgresql"
+  gen:
+    go:
+      package: "sqlc"
+      out: "./src/db/sqlc/main"
+      emit_json_tags: true
+      emit_pointers_for_null_types: true
+      emit_interface: true
+      query_parameter_limit: 5
+      overrides:
+      - column: "authors.id"
+        go_type: "your/package.SomeType"
+      rename:
+        foo: "bar"
