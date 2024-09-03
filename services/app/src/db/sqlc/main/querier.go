@@ -10,6 +10,7 @@ import (
 
 type Querier interface {
 	CreatePerson(ctx context.Context, prime string, firstName string, lastName string) (Person, error)
+	GetPersonByPrime(ctx context.Context, prime string) (Person, error)
 	GetPersonList(ctx context.Context, limit int32, offset int32) ([]Person, error)
 }
 

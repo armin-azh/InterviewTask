@@ -1,69 +1,74 @@
+import {useState, useEffect} from "react";
+import {nanoid} from "nanoid";
+import moment from "moment";
 
+// Components
+import Loading from "@/components/Loading";
 
+// Hooks
+import {useGetPersonsQuery} from "@/store/api/gateway";
+
+// type
+import type {PaginationArgs} from "@/types/args.d";
 
 export default function Table() {
+    const [page, setPage] = useState<PaginationArgs>({page: 1, pageSize: 10});
 
-    return<div className="relative overflow-x-auto">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-900 uppercase dark:text-gray-400">
+    const {data, isLoading, refetch} = useGetPersonsQuery(page)
+
+    useEffect(() => {
+        refetch();
+    }, [page]);
+
+
+    return<div className="relative overflow-x-auto rounded-lg">
+        <Loading isLoading={isLoading}/>
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+            <thead className="text-xs text-white uppercase bg-blue-500">
             <tr>
+                <th scope="col" className="px-6 py-3">
+                    #
+                </th>
                 <th scope="col" className="px-6 py-3">
                     ID
                 </th>
                 <th scope="col" className="px-6 py-3">
-                    Name
+                    Firstname
                 </th>
                 <th scope="col" className="px-6 py-3">
-                    No Faces
+                    Lastname
                 </th>
                 <th scope="col" className="px-6 py-3">
-                    Price
+                    Created
                 </th>
             </tr>
             </thead>
             <tbody>
-            <tr className="bg-white dark:bg-gray-800">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Apple MacBook Pro 17
-                </th>
-                <td className="px-6 py-4">
-                    Silver
-                </td>
-                <td className="px-6 py-4">
-                    Laptop
-                </td>
-                <td className="px-6 py-4">
-                    $2999
-                </td>
-            </tr>
-            <tr className="bg-white dark:bg-gray-800">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Microsoft Surface Pro
-                </th>
-                <td className="px-6 py-4">
-                    White
-                </td>
-                <td className="px-6 py-4">
-                    Laptop PC
-                </td>
-                <td className="px-6 py-4">
-                    $1999
-                </td>
-            </tr>
-            <tr className="bg-white dark:bg-gray-800">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Magic Mouse 2
-                </th>
-                <td className="px-6 py-4">
-                    Black
-                </td>
-                <td className="px-6 py-4">
-                    Accessories
-                </td>
-                <td className="px-6 py-4">
-                    $99
-                </td>
-            </tr>
+
+            {
+                data?.results.map((item, index) => {
+                    return <tr className="text-gray-700 border-b-2" key={nanoid()}>
+                        <th scope="row"
+                            className="px-6 py-4 font-medium">
+                            {index + 1}
+                        </th>
+                        <th scope="row"
+                            className="px-6 py-4 font-medium">
+                            {item.prime}
+                        </th>
+                        <td className="px-6 py-4 capitalize">
+                            {item.first_name}
+                        </td>
+                        <td className="px-6 py-4 capitalize">
+                            {item.last_name}
+                        </td>
+                        <td className="px-6 py-4">
+                            {moment(item.created_at.Time).format('YYYY-MM-DD HH:mm:ss A')}
+                        </td>
+                    </tr>
+                })
+            }
+
             </tbody>
         </table>
     </div>

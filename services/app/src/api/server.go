@@ -35,7 +35,9 @@ func NewServer(store sqlcmain.Store) *Server {
 
 	// Person
 	person := v1.Group("/persons")
-	person.Post("", server.createPerson) // create new person
+	person.Post("", server.createPerson)        // create new person
+	person.Get("", server.getPersonList)        // Get person list
+	person.Get("/person/:id", server.getPerson) // Get person by prime
 
 	// Enrollment
 	enroll := v1.Group("/enrollments")
