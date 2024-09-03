@@ -41,6 +41,15 @@ export const gatewayApi = createApi({
             })
         }),
 
+        // upload person face
+        uploadPersonFace: builder.mutation({
+            query: ({data,prime})=>({
+                url: `/api/v1/persons/person/${prime}/upload`,
+                method: 'POST',
+                body: data
+            })
+        }),
+
         // Get Person List
 
         getPersons: builder.query<ListResponse<Person>, PaginationArgs>({
@@ -71,6 +80,7 @@ export const {
     // Mutation
     useCreatePersonMutation,
     useGetPersonMutation,
+    useUploadPersonFaceMutation,
 
     // Query
     useGetPersonsQuery

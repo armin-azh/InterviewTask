@@ -9,6 +9,7 @@ import (
 )
 
 type Querier interface {
+	CreateNewFace(ctx context.Context, personID int32, path string) (Face, error)
 	CreatePerson(ctx context.Context, prime string, firstName string, lastName string) (Person, error)
 	GetPersonByPrime(ctx context.Context, prime string) (Person, error)
 	GetPersonList(ctx context.Context, limit int32, offset int32) ([]Person, error)

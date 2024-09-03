@@ -1,9 +1,11 @@
 package api
 
 import (
+	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"interview.com/app/src/common"
 	sqlcmain "interview.com/app/src/db/sqlc/main"
 )
 
@@ -11,12 +13,16 @@ type Server struct {
 	app       *fiber.App
 	store     sqlcmain.Store
 	validator *validator.Validate
+	config    *common.Config
+	producer  *kafka.Producer
+
+	enrollmentTopic string
 }
 
-func NewServer(store sqlcmain.Store) *Server {
+func NewServer(store sqlcmain.Store, config *common.Config, producer *kafka.Producer) *Server {
 
 	// Create new server
-	server := &Server{store: store}
+	server := &Server{store: store, config: config, producer: producer, enrollmentTopic: "cmp.enrollment.image"}
 
 	app := fiber.New(fiber.Config{
 		AppName: "App Gateway Service",
@@ -35,9 +41,10 @@ func NewServer(store sqlcmain.Store) *Server {
 
 	// Person
 	person := v1.Group("/persons")
-	person.Post("", server.createPerson)        // create new person
-	person.Get("", server.getPersonList)        // Get person list
-	person.Get("/person/:id", server.getPerson) // Get person by prime
+	person.Post("", server.createPerson)                         // create new person
+	person.Get("", server.getPersonList)                         // Get person list
+	person.Get("/person/:id", server.getPerson)                  // Get person by prime
+	person.Post("/person/:id/upload", server.uploadImagToPerson) // Get person by prime
 
 	// Enrollment
 	enroll := v1.Group("/enrollments")

@@ -53,7 +53,7 @@ export default function NewPerson() {
                             .unwrap()
                             .then((response:DataResponse<Person>)=>{
                                 nextStep(3);
-                                setPersonId(response.data.id);
+                                setPersonId(response.data.prime);
                             })
                             .catch(reason=>{
                                 toast.error(`Cannot file the person with id ${prime}`, topCenterToastOption);

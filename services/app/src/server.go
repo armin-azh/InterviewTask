@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"os"
 
 	"github.com/gofiber/fiber/v2/log"
@@ -37,6 +38,17 @@ func main() {
 		return
 	}
 
+	// Connect to kafka
+	producer, err := kafka.NewProducer(&kafka.ConfigMap{
+		"bootstrap.servers": config.KafkaBootStr,
+	})
+
+	if err != nil {
+		log.Error(err)
+		return
+	}
+	defer producer.Close()
+	
 	// Create database connection
 	conn, err := sql.Open("postgres", config.DatabaseUrl)
 	if err != nil {
@@ -46,7 +58,7 @@ func main() {
 	store := sqlcmain.NewStore(conn)
 
 	// Create new server instances
-	server := api.NewServer(store)
+	server := api.NewServer(store, config, producer)
 
 	if err := server.Start(fmt.Sprintf("%s:%d", config.Host, config.Port)); err != nil {
 		log.Fatal("Cannot start server", err)

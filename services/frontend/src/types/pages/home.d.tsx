@@ -7,6 +7,6 @@ export interface TabProp{
 export interface StepProp{
     stepId: number;
     nextStep: (step:number)=> void;
-    personId: number;
-    setPersonId: (id:number)=> void;
+    personId: string;
+    setPersonId: (id:string)=> void;
 }

@@ -15,7 +15,7 @@ import {useCreatePersonMutation} from "@/store/api/gateway";
 
 
 interface Args extends HookArgs{
-    setPersonId: (id:number) => void;
+    setPersonId: (id:string) => void;
 }
 
 export default function useCreatePerson() {
@@ -31,7 +31,7 @@ export default function useCreatePerson() {
                 .unwrap()
                 .then((response: DataResponse<Person>)=>{
                     toast.success('New person has been created', topCenterToastOption);
-                    args.setPersonId(response.data.id);
+                    args.setPersonId(response.data.prime);
                     if(args.onUpdate){
                         args.onUpdate();
                     }

@@ -10,7 +10,7 @@ import StepSelector from "@/components/Home/Enrollment/StepSelector";
 
 export default function  Enrollment() {
     const [stepId, setStepId] = useState<number>(0);
-    const [personId, setPersonId] = useState<number>(0);
+    const [personId, setPersonId] = useState<string>("");
 
     return <StepContext.Provider value={{stepId, nextStep: (step)=>setStepId(step), personId, setPersonId: (id)=>{setPersonId(id)}}}>
         <div className='flex flex-col justify-center w-full py-10 gap-6'>

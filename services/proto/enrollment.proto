@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package enrollment;
+
+option go_package="proto/enrollment";
+
+
+message Person{
+    int32 id = 1;
+    string prime = 2;
+    string path = 3;
+}

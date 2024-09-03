@@ -4,4 +4,4 @@ import {createContext} from "react";
 import {StepProp} from "@/types/pages/home.d";
 
 
-export const StepContext = createContext<StepProp>({stepId:0, nextStep: (step)=>{}, personId:0, setPersonId:(id)=>{}})
+export const StepContext = createContext<StepProp>({stepId:0, nextStep: (step)=>{}, personId:"", setPersonId:(id)=>{}})
