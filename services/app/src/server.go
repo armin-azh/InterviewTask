@@ -12,29 +12,27 @@ import (
 	sqlcmain "interview.com/app/src/db/sqlc/main"
 )
 
-
-
 func main() {
 	log.Info("Starting App Gateway service")
 
-	cfgPath:=os.Getenv("APP_CONFIG")
-	if cfgPath==""{
+	cfgPath := os.Getenv("APP_CONFIG")
+	if cfgPath == "" {
 		cfgPath = "."
 	}
 
-	cfgPathInfo, err:=os.Stat(cfgPath)
-	if err!=nil{
+	cfgPathInfo, err := os.Stat(cfgPath)
+	if err != nil {
 		log.Error("Cannot find config file", err)
 		return
 	}
-	if !cfgPathInfo.IsDir(){
+	if !cfgPathInfo.IsDir() {
 		log.Errorf("%s is not a directory", cfgPath)
-		return 
+		return
 	}
-	
+
 	// Load configs
 	config, err := common.LoadConfig(cfgPath)
-	if err!=nil{
+	if err != nil {
 		log.Error(err)
 		return
 	}
@@ -47,11 +45,10 @@ func main() {
 
 	store := sqlcmain.NewStore(conn)
 
-
 	// Create new server instances
-	server:=api.NewServer(store)
+	server := api.NewServer(store)
 
-	if err:= server.Start(fmt.Sprintf("%s:%d", config.Host,config.Port));err!=nil{
+	if err := server.Start(fmt.Sprintf("%s:%d", config.Host, config.Port)); err != nil {
 		log.Fatal("Cannot start server", err)
 	}
 }
