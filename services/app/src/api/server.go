@@ -1,17 +1,21 @@
 package api
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	sqlcmain "interview.com/app/src/db/sqlc/main"
+)
 
 
 type Server struct{
 	app *fiber.App
+	store sqlcmain.Store
 }
 
 
-func NewServer() *Server{
+func NewServer(store sqlcmain.Store) *Server{
 
 	// Create new server
-	server := &Server{}
+	server := &Server{store: store}
 
 	app:=fiber.New(fiber.Config{
 		AppName: "App Gateway Service",

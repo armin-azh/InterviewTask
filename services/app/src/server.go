@@ -1,12 +1,15 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
 
 	"github.com/gofiber/fiber/v2/log"
+	_ "github.com/lib/pq"
 	"interview.com/app/src/api"
 	"interview.com/app/src/common"
+	sqlcmain "interview.com/app/src/db/sqlc/main"
 )
 
 
@@ -36,8 +39,17 @@ func main() {
 		return
 	}
 
+	// Create database connection
+	conn, err := sql.Open("postgres", config.DatabaseUrl)
+	if err != nil {
+		log.Fatal("Cannot connect to database", err)
+	}
+
+	store := sqlcmain.NewStore(conn)
+
+
 	// Create new server instances
-	server:=api.NewServer()
+	server:=api.NewServer(store)
 
 	if err:= server.Start(fmt.Sprintf("%s:%d", config.Host,config.Port));err!=nil{
 		log.Fatal("Cannot start server", err)

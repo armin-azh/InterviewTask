@@ -3,7 +3,7 @@
 //   sqlc v1.27.0
 // source: person.sql
 
-package sqlc
+package sqlcmain
 
 import (
 	"context"
