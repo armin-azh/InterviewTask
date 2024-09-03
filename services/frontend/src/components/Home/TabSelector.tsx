@@ -7,6 +7,7 @@ import {HomeContext} from "@/components/Home/Context";
 // Components
 import Enrollment from "@/components/Home/Enrollment";
 import UploadVideo from "@/components/Home/UploadVideo";
+import Persons from "@/components/Home/Persons";
 
 
 
@@ -19,6 +20,8 @@ export default function TabSelector() {
             return <UploadVideo/>
         case 1:
             return <Enrollment/>
+        case 2:
+            return <Persons/>
         default:
             return null;
     }
