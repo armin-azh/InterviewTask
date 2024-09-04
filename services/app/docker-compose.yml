@@ -64,3 +64,19 @@ services:
 
     ports:
       - "6379:6379"
+
+  detection_rpc:
+    build:
+      dockerfile: Dockerfile
+      context: ../source
+    ports:
+      - "50052:50052"
+    volumes:
+      - ../source/models:/home/app/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]

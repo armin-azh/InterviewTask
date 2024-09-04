@@ -14,6 +14,7 @@ import grpc
 
 import logging
 
+from src.utils import get_env
 from src.rpc import DetectionInferenceService
 from src.proto.detection_srv_pb2_grpc import add_DetectionServiceServicer_to_server
 from src.logger import setup_logging
@@ -24,6 +25,9 @@ logger = logging.getLogger('runner')
 
 async def main(args: Namespace)->None:
 
+    host = get_env('HOST', '0.0.0.0')
+    port = get_env('PORT', 50052)
+
     detector_weights = './models/detector.onnx'
     landmark_weights = './models/landmarks.onnx'
     mean_calibration = './models/means.pkl'
@@ -32,7 +36,7 @@ async def main(args: Namespace)->None:
 
     add_DetectionServiceServicer_to_server(DetectionInferenceService(model_file=detector_weights, landmark_file=landmark_weights, mk_file=mean_calibration), server)
 
-    address = f"0.0.0.0:{args.port}"
+    address = f"{host}:{port}"
 
     server.add_insecure_port(address)
     
@@ -42,7 +46,4 @@ async def main(args: Namespace)->None:
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument('-gpu', help='Enable on gpu', action='store_true')
-    parser.add_argument('-host', help='Host name', type=str, default='0.0.0.0')
-    parser.add_argument('-port', help='Server Port number', type=int, default=50052)
     asyncio.run(main(parser.parse_args()))

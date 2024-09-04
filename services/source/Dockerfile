@@ -1,8 +1,5 @@
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu20.04
 
-ARG PORT="50052"
-ARG GPU=true
-
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
@@ -26,13 +23,8 @@ RUN apt-get update && \
     libxrender1 \
     libxext6 \
     libgl1 && \
-    apt-get install -y sudo && \
-    adduser --disabled-password --gecos '' vscode && \
-    echo 'vscode ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
-    usermod -aG sudo vscode && \
     rm -rf /var/lib/apt/lists/*
 
-USER Rumble
 WORKDIR /home/app
 
 COPY . .
@@ -41,5 +33,5 @@ RUN pip install --no-cache-dir --upgrade pip
 RUN pip install -r requirements.txt
 
 
-CMD python3 run.py -gpu -port ${PORT}
+CMD python3 run.py
 
