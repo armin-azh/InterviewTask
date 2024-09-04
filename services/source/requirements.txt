@@ -4,3 +4,4 @@ grpcio==1.66.1
 grpcio-tools==1.66.1
 protobuf==5.27.2
 pillow==10.4.0
+scikit-image
