@@ -1,6 +1,7 @@
+from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Optional, Union as _Union
+from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -27,13 +28,17 @@ class BBox(_message.Message):
     def __init__(self, x: _Optional[int] = ..., y: _Optional[int] = ..., w: _Optional[int] = ..., h: _Optional[int] = ...) -> None: ...
 
 class Face(_message.Message):
-    __slots__ = ("bbox", "hasHP", "timestamp", "pose")
+    __slots__ = ("bbox", "hasHP", "timestamp", "pose", "embedding", "track_id")
     BBOX_FIELD_NUMBER: _ClassVar[int]
     HASHP_FIELD_NUMBER: _ClassVar[int]
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     POSE_FIELD_NUMBER: _ClassVar[int]
+    EMBEDDING_FIELD_NUMBER: _ClassVar[int]
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
     bbox: BBox
     hasHP: bool
     timestamp: int
     pose: Angle
-    def __init__(self, bbox: _Optional[_Union[BBox, _Mapping]] = ..., hasHP: bool = ..., timestamp: _Optional[int] = ..., pose: _Optional[_Union[Angle, _Mapping]] = ...) -> None: ...
+    embedding: _containers.RepeatedScalarFieldContainer[float]
+    track_id: int
+    def __init__(self, bbox: _Optional[_Union[BBox, _Mapping]] = ..., hasHP: bool = ..., timestamp: _Optional[int] = ..., pose: _Optional[_Union[Angle, _Mapping]] = ..., embedding: _Optional[_Iterable[float]] = ..., track_id: _Optional[int] = ...) -> None: ...

@@ -19,4 +19,6 @@ message Face{
     bool hasHP = 2;
     int64 timestamp = 3;
     Angle pose = 4;
+    repeated float embedding = 5;
+    int64 track_id = 6; 
 }

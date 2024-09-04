@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package com.interview.embedding;
+
+import public "face.proto";
+
+message RegisterFaceRequest{
+    bytes image = 1;
+    repeated Face faces = 2;
+}
+
+message RegisterFaceResponse {
+}
+
+message GetEmbeddingRequest{
+    bytes image = 1;
+    repeated Face faces = 2;
+}
+message GetEmbeddingResponse{
+    repeated Face faces = 1;
+}
+
+service EmbeddingService {
+    rpc Register (RegisterFaceRequest) returns (RegisterFaceResponse) {}
+    rpc GetEmbedding (GetEmbeddingResponse) returns (GetEmbeddingResponse) {}
+}
+
+
