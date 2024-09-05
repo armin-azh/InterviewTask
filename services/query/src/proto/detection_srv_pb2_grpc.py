@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import data_processing_srv_pb2 as data__processing__srv__pb2
+import detection_srv_pb2 as detection__srv__pb2
 
 GRPC_GENERATED_VERSION = '1.66.1'
 GRPC_VERSION = grpc.__version__
@@ -18,14 +18,14 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in data_processing_srv_pb2_grpc.py depends on'
+        + f' but the generated code in detection_srv_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
     )
 
 
-class EmbeddingServiceStub(object):
+class DetectionServiceStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -34,59 +34,59 @@ class EmbeddingServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.Register = channel.unary_unary(
-                '/com.interview.embedding.EmbeddingService/Register',
-                request_serializer=data__processing__srv__pb2.RegisterFaceRequest.SerializeToString,
-                response_deserializer=data__processing__srv__pb2.RegisterFaceResponse.FromString,
+        self.DetectSingleImage = channel.unary_unary(
+                '/com.interview.detection.DetectionService/DetectSingleImage',
+                request_serializer=detection__srv__pb2.DetectSingleImageRequest.SerializeToString,
+                response_deserializer=detection__srv__pb2.DetectSingleImageResponse.FromString,
                 _registered_method=True)
-        self.GetEmbedding = channel.unary_unary(
-                '/com.interview.embedding.EmbeddingService/GetEmbedding',
-                request_serializer=data__processing__srv__pb2.GetEmbeddingRequest.SerializeToString,
-                response_deserializer=data__processing__srv__pb2.GetEmbeddingResponse.FromString,
+        self.DetectImages = channel.unary_unary(
+                '/com.interview.detection.DetectionService/DetectImages',
+                request_serializer=detection__srv__pb2.DetectImagesReqeust.SerializeToString,
+                response_deserializer=detection__srv__pb2.DetectImagesResponse.FromString,
                 _registered_method=True)
 
 
-class EmbeddingServiceServicer(object):
+class DetectionServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def Register(self, request, context):
+    def DetectSingleImage(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetEmbedding(self, request, context):
+    def DetectImages(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_EmbeddingServiceServicer_to_server(servicer, server):
+def add_DetectionServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'Register': grpc.unary_unary_rpc_method_handler(
-                    servicer.Register,
-                    request_deserializer=data__processing__srv__pb2.RegisterFaceRequest.FromString,
-                    response_serializer=data__processing__srv__pb2.RegisterFaceResponse.SerializeToString,
+            'DetectSingleImage': grpc.unary_unary_rpc_method_handler(
+                    servicer.DetectSingleImage,
+                    request_deserializer=detection__srv__pb2.DetectSingleImageRequest.FromString,
+                    response_serializer=detection__srv__pb2.DetectSingleImageResponse.SerializeToString,
             ),
-            'GetEmbedding': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetEmbedding,
-                    request_deserializer=data__processing__srv__pb2.GetEmbeddingRequest.FromString,
-                    response_serializer=data__processing__srv__pb2.GetEmbeddingResponse.SerializeToString,
+            'DetectImages': grpc.unary_unary_rpc_method_handler(
+                    servicer.DetectImages,
+                    request_deserializer=detection__srv__pb2.DetectImagesReqeust.FromString,
+                    response_serializer=detection__srv__pb2.DetectImagesResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'com.interview.embedding.EmbeddingService', rpc_method_handlers)
+            'com.interview.detection.DetectionService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('com.interview.embedding.EmbeddingService', rpc_method_handlers)
+    server.add_registered_method_handlers('com.interview.detection.DetectionService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class EmbeddingService(object):
+class DetectionService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def Register(request,
+    def DetectSingleImage(request,
             target,
             options=(),
             channel_credentials=None,
@@ -99,9 +99,9 @@ class EmbeddingService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/com.interview.embedding.EmbeddingService/Register',
-            data__processing__srv__pb2.RegisterFaceRequest.SerializeToString,
-            data__processing__srv__pb2.RegisterFaceResponse.FromString,
+            '/com.interview.detection.DetectionService/DetectSingleImage',
+            detection__srv__pb2.DetectSingleImageRequest.SerializeToString,
+            detection__srv__pb2.DetectSingleImageResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -113,7 +113,7 @@ class EmbeddingService(object):
             _registered_method=True)
 
     @staticmethod
-    def GetEmbedding(request,
+    def DetectImages(request,
             target,
             options=(),
             channel_credentials=None,
@@ -126,9 +126,9 @@ class EmbeddingService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/com.interview.embedding.EmbeddingService/GetEmbedding',
-            data__processing__srv__pb2.GetEmbeddingRequest.SerializeToString,
-            data__processing__srv__pb2.GetEmbeddingResponse.FromString,
+            '/com.interview.detection.DetectionService/DetectImages',
+            detection__srv__pb2.DetectImagesReqeust.SerializeToString,
+            detection__srv__pb2.DetectImagesResponse.FromString,
             options,
             channel_credentials,
             insecure,

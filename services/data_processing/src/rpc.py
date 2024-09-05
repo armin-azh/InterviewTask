@@ -41,6 +41,7 @@ class DataProcessingInferenceService(EmbeddingService):
         keypoints = []
         for face in request.faces:
             points = []
+            self.ids.append(face.person_id)
             for pt in face.keypoints:
                 points.append([pt.x, pt.y])
             keypoints.append(points)

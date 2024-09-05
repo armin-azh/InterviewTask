@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package com.interview.forwarding;
+
+import public "face.proto";
+
+message DataForwarding{
+    bytes image = 1;
+    repeated Face faces = 2;
+    int32 id =3;
+    string prime = 4;
+}
+
+
+
+

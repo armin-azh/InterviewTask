@@ -22,7 +22,7 @@ message GetEmbeddingResponse{
 
 service EmbeddingService {
     rpc Register (RegisterFaceRequest) returns (RegisterFaceResponse) {}
-    rpc GetEmbedding (GetEmbeddingResponse) returns (GetEmbeddingResponse) {}
+    rpc GetEmbedding (GetEmbeddingRequest) returns (GetEmbeddingResponse) {}
 }
 
 

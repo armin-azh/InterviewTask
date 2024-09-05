@@ -161,3 +161,26 @@ services:
       - ./storage/media:/home/app/media
 
       
+  query:
+    build:
+      context: ./service/query
+      dockerfile: Dockerfile
+
+    environment:
+      - DET_RPC_HOST=detection:50052
+      - EM_RPC_HOST=embedding:50053
+      - KAFKA_HOST= kafka:9092
+      - MEDIA_ROOT=/home/app/media
+      
+    networks: 
+      - emb-rpc-tier
+      - det-rpc-tier
+      - kafka-tier
+
+    depends_on:
+      - kafka
+      - detection
+      - embedding
+
+    volumes:
+      - ./storage/media:/home/app/media
