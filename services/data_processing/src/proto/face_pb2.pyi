@@ -27,18 +27,30 @@ class BBox(_message.Message):
     h: int
     def __init__(self, x: _Optional[int] = ..., y: _Optional[int] = ..., w: _Optional[int] = ..., h: _Optional[int] = ...) -> None: ...
 
+class Keypoint(_message.Message):
+    __slots__ = ("x", "y")
+    X_FIELD_NUMBER: _ClassVar[int]
+    Y_FIELD_NUMBER: _ClassVar[int]
+    x: int
+    y: int
+    def __init__(self, x: _Optional[int] = ..., y: _Optional[int] = ...) -> None: ...
+
 class Face(_message.Message):
-    __slots__ = ("bbox", "hasHP", "timestamp", "pose", "embedding", "track_id")
+    __slots__ = ("bbox", "hasHP", "timestamp", "pose", "embedding", "track_id", "person_id", "keypoints")
     BBOX_FIELD_NUMBER: _ClassVar[int]
     HASHP_FIELD_NUMBER: _ClassVar[int]
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     POSE_FIELD_NUMBER: _ClassVar[int]
     EMBEDDING_FIELD_NUMBER: _ClassVar[int]
     TRACK_ID_FIELD_NUMBER: _ClassVar[int]
+    PERSON_ID_FIELD_NUMBER: _ClassVar[int]
+    KEYPOINTS_FIELD_NUMBER: _ClassVar[int]
     bbox: BBox
     hasHP: bool
     timestamp: int
     pose: Angle
     embedding: _containers.RepeatedScalarFieldContainer[float]
     track_id: int
-    def __init__(self, bbox: _Optional[_Union[BBox, _Mapping]] = ..., hasHP: bool = ..., timestamp: _Optional[int] = ..., pose: _Optional[_Union[Angle, _Mapping]] = ..., embedding: _Optional[_Iterable[float]] = ..., track_id: _Optional[int] = ...) -> None: ...
+    person_id: str
+    keypoints: _containers.RepeatedCompositeFieldContainer[Keypoint]
+    def __init__(self, bbox: _Optional[_Union[BBox, _Mapping]] = ..., hasHP: bool = ..., timestamp: _Optional[int] = ..., pose: _Optional[_Union[Angle, _Mapping]] = ..., embedding: _Optional[_Iterable[float]] = ..., track_id: _Optional[int] = ..., person_id: _Optional[str] = ..., keypoints: _Optional[_Iterable[_Union[Keypoint, _Mapping]]] = ...) -> None: ...

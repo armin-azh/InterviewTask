@@ -5,7 +5,6 @@ from google.protobuf import message as _message
 from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
 from face_pb2 import Angle as Angle
 from face_pb2 import BBox as BBox
-from face_pb2 import Keypoint as Keypoint
 from face_pb2 import Face as Face
 
 DESCRIPTOR: _descriptor.FileDescriptor

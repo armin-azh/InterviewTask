@@ -15,7 +15,7 @@ import grpc
 import logging
 
 from src.utils import get_env
-from src.rpc import DetectionInferenceService
+from src.rpc import DataProcessingInferenceService
 from src.proto.data_processing_srv_pb2_grpc import add_EmbeddingServiceServicer_to_server
 from src.logger import setup_logging
 
@@ -26,15 +26,15 @@ logger = logging.getLogger('runner')
 async def main(args: Namespace)->None:
 
     host = get_env('HOST', '0.0.0.0')
-    port = get_env('PORT', 50052)
+    port = get_env('PORT', 50053)
 
-    detector_weights = './models/detector.onnx'
-    landmark_weights = './models/landmarks.onnx'
-    mean_calibration = './models/means.pkl'
+    embed_weights = './models/embedding.onnx'
+    
 
     server = grpc.aio.server()
 
-    add_EmbeddingServiceServicer_to_server(DetectionInferenceService(model_file=detector_weights, landmark_file=landmark_weights, mk_file=mean_calibration), server)
+    # Add service 
+    add_EmbeddingServiceServicer_to_server(DataProcessingInferenceService(model_file=embed_weights), server)
 
     address = f"{host}:{port}"
 

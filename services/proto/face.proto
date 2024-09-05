@@ -14,6 +14,11 @@ message BBox {
     int64 h = 4;
 }
 
+message Keypoint{
+    int64 x=1;
+    int64 y=2;
+}
+
 message Face{
     BBox bbox = 1;
     bool hasHP = 2;
@@ -21,4 +26,6 @@ message Face{
     Angle pose = 4;
     repeated float embedding = 5;
     int64 track_id = 6; 
+    string person_id=7;
+    repeated Keypoint keypoints=8;
 }

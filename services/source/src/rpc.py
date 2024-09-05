@@ -12,7 +12,7 @@ import numpy as np
 
 from src.proto.detection_srv_pb2_grpc import DetectionService
 from src.proto import detection_srv_pb2 as d_pb
-from src.proto.face_pb2 import Face
+from src.proto.face_pb2 import Face, Keypoint
 
 # Models
 from src.models import Detector, Landmark
@@ -38,7 +38,7 @@ class DetectionInferenceService(DetectionService):
         image = request.image
         image = Image.open(io.BytesIO(image))
         image = np.array(image)
-        _,bbox,_ = self.model.detect(image)
+        _,bbox,points = self.model.detect(image)
 
         if is_hpe:
             poses, _ = self.hpe.get(image, bbox)
@@ -49,7 +49,14 @@ class DetectionInferenceService(DetectionService):
         current = datetime.now()
 
         for i, box in enumerate(bbox):
+            pts = points[i]
             face = Face()
+
+            # Append points
+            for pt in pts:
+                x,y=pt
+                face.keypoints.append(Keypoint(x=int(x),y=int(y)))
+
 
             x1,y1,x2,y2 = box
             

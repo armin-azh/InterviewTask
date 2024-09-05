@@ -17,6 +17,7 @@ import io
 from src.utils import get_env
 from src.proto.enrollment_pb2 import Person
 from src.rpc.detection import DetectionRPC
+from src.rpc.embedding import EmbeddingRPC
 
 from confluent_kafka import Consumer, KafkaError
 
@@ -26,8 +27,9 @@ logger = logging.getLogger("enrollment")
 def main(args:Namespace)->None:
     
     # TOOD: Default value will be removed
-    media_root = Path(get_env('MEDIA_ROOT', '/home/ixion/Projects/InterviewTask/services/app/media'))
+    media_root = Path(get_env('MEDIA_ROOT', '/home/ixion/Projects/InterviewTask/storage/media'))
     det_rpc_host = get_env('DET_RPC_HOST', '0.0.0.0:50052')
+    embedding_rpc = get_env('EM_RPC_HOST', '0.0.0.0:50053')
 
     conf = {
     'bootstrap.servers': 'localhost:9093',
@@ -36,6 +38,7 @@ def main(args:Namespace)->None:
     }
 
     det_rpc = DetectionRPC(det_rpc_host)
+    em_rpc = EmbeddingRPC(embedding_rpc)
 
     consumer = Consumer(conf)
 
@@ -52,6 +55,8 @@ def main(args:Namespace)->None:
             else:
                 logger.error('Error: {}'.format(msg.error()))
 
+            continue
+
         # Read message from kafka
         person = Person()
         person.ParseFromString(msg.value())
@@ -66,13 +71,17 @@ def main(args:Namespace)->None:
             img_bytes = img_byte_arr.getvalue()
 
         # Detect
-        response = det_rpc.request(img_bytes)
+        det_response = det_rpc.request(img_bytes)
 
-        logger.info(response)
+        faces = det_response.faces
+        for face in faces:
+            face.person_id = person.prime
 
-        # Get embeddings
+        logger.info(faces)
 
-        # Pull to vector db
+        # Get embeddings and pull to vector db
+        em_rpc.request(img_bytes, faces)
+
 
     consumer.close()
 
