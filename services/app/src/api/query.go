@@ -95,7 +95,7 @@ func (server *Server) getQueryList(c *fiber.Ctx) error {
 		})
 	}
 
-	sessions, err := server.store.GetSessionList(context.Background(), params.Page, (params.Page-1)*params.PageSize)
+	sessions, err := server.store.GetSessionList(context.Background(), params.PageSize, (params.Page-1)*params.PageSize)
 	if err != nil {
 		var pgErr *pq.Error
 		if errors.As(err, &pgErr) {

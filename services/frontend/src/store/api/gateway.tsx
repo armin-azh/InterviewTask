@@ -64,7 +64,7 @@ export const gatewayApi = createApi({
         getSession: builder.query<DataResponse<Session>,{prime:string}>({
             keepUnusedDataFor: 1,
             query:({prime})=>{
-                return {url: `/api/v1/queries/${prime}`}
+                return {url: `/api/v1/queries/query/${prime}`}
             }
         }),
 
