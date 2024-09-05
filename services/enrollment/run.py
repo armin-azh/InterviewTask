@@ -30,11 +30,12 @@ def main(args:Namespace)->None:
     media_root = Path(get_env('MEDIA_ROOT', '/home/ixion/Projects/InterviewTask/storage/media'))
     det_rpc_host = get_env('DET_RPC_HOST', '0.0.0.0:50052')
     embedding_rpc = get_env('EM_RPC_HOST', '0.0.0.0:50053')
+    kafka_bootstrap = get_env('KAFKA_HOST', 'localhost:9093')
 
     conf = {
-    'bootstrap.servers': 'localhost:9093',
-    'group.id': 'enrollment-group',
-    'auto.offset.reset': 'earliest'
+        'bootstrap.servers': kafka_bootstrap,
+        'group.id': 'enrollment-group',
+        'auto.offset.reset': 'earliest'
     }
 
     det_rpc = DetectionRPC(det_rpc_host)

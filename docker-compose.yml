@@ -9,6 +9,12 @@ networks:
   db_tier:
     driver: bridge
 
+  det-rpc-tier:
+    driver: bridge
+
+  emb-rpc-tier:
+    driver: bridge
+
 
 services:
   zookeeper:
@@ -92,18 +98,65 @@ services:
       - postgres
       - kafka
 
-  # detection_rpc:
-  #   build:
-  #     dockerfile: Dockerfile
-  #     context: ./services/source
-  #   ports:
-  #     - "50052:50052"
-  #   volumes:
-  #     - ./models/detection:/home/app/models
-  #   deploy:
-  #     resources:
-  #       reservations:
-  #         devices:
-  #           - driver: nvidia
-  #             count: 1
-  #             capabilities: [ gpu ]
+  detection:
+    build:
+      dockerfile: Dockerfile
+      context: ./services/source
+
+    networks:
+      - det-rpc-tier
+    ports:
+      - "50052:50052"
+    volumes:
+      - ./models/detection:/home/app/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+
+  embedding:
+    build:
+      dockerfile: Dockerfile
+      context: ./services/data_processing
+
+    networks:
+      - emb-rpc-tier
+    ports:
+      - "50053:50053"
+    volumes:
+      - ./models/embedding:/home/app/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+
+
+  enrollment:
+    build:
+      dockerfile: Dockerfile
+      context: ./services/enrollment
+
+    environment:
+      - DET_RPC_HOST=detection:50052
+      - EM_RPC_HOST=embedding:50053
+      - KAFKA_HOST= kafka:9093
+      - MEDIA_ROOT=/home/app/media
+    networks: 
+      - emb-rpc-tier
+      - detdet-rpc-tier
+
+    depends_on:
+      - kafka
+      - detection
+      - embedding
+
+    volumes:
+      - ./storage/media:/home/app/media
+
+      
