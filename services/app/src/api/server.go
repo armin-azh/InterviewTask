@@ -57,7 +57,7 @@ func NewServer(store sqlcmain.Store, config *common.Config, producer *kafka.Prod
 	query := v1.Group("/queries")
 	query.Post("", server.createQuery)       // Create new query
 	query.Get("", server.getQueryList)       // Get query list
-	query.Get("/query/:pk", server.getQuery) // Get query instance
+	query.Get("/query/:id", server.getQuery) // Get query instance
 
 	server.app = app
 
