@@ -127,7 +127,7 @@ services:
     ports:
       - "50053:50053"
     volumes:
-      - ./models/embedding:/home/app/models
+      - ./models/data_processing:/home/app/models
     deploy:
       resources:
         reservations:
@@ -145,11 +145,12 @@ services:
     environment:
       - DET_RPC_HOST=detection:50052
       - EM_RPC_HOST=embedding:50053
-      - KAFKA_HOST= kafka:9093
+      - KAFKA_HOST= kafka:9092
       - MEDIA_ROOT=/home/app/media
     networks: 
       - emb-rpc-tier
-      - detdet-rpc-tier
+      - det-rpc-tier
+      - kafka-tier
 
     depends_on:
       - kafka

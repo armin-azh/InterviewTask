@@ -8,8 +8,7 @@ RUN apt-get update && \
     g++ \
     python3-numpy \
     gcc \
-    make \
-    rm -rf /var/lib/apt/lists/*
+    make 
 
 WORKDIR /home/app
 
