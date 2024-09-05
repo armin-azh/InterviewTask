@@ -6,8 +6,9 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 
 // types
-import {ListResponse} from "@/types/response.d";
+import {DataResponse, ListResponse} from "@/types/response.d";
 import {Person} from "@/types/models/person.d";
+import {Session} from "@/types/models/session.d";
 import {PaginationArgs} from "@/types/args.d";
 
 
@@ -50,8 +51,46 @@ export const gatewayApi = createApi({
             })
         }),
 
-        // Get Person List
+        // create new session
+        createNewSession: builder.mutation({
+            query: ({data})=>({
+                url: `/api/v1/queries`,
+                method: 'POST',
+                body: data
+            })
+        }),
 
+        // get Session by prime
+        getSession: builder.query<DataResponse<Session>,{prime:string}>({
+            keepUnusedDataFor: 1,
+            query:({prime})=>{
+                return {url: `/api/v1/queries/${prime}`}
+            }
+        }),
+
+        // Get session list
+        getSessions: builder.query<ListResponse<Session>, PaginationArgs>({
+            keepUnusedDataFor: 1,
+            query: ({page, pageSize}) => {
+                // Make Search queries
+                const query = new URLSearchParams();
+
+                if(typeof page === 'string'){
+                    query.append('page', page);
+                }
+
+                if(typeof pageSize === 'string'){
+                    query.append('page_size', pageSize);
+                }
+
+                // Get query in string
+                const queryString = query.toString();
+
+                return {url: `/api/v1/queries?${queryString}`}
+            }
+        }),
+
+        // Get Person List
         getPersons: builder.query<ListResponse<Person>, PaginationArgs>({
             keepUnusedDataFor: 1,
             query: ({page, pageSize})=>{
@@ -81,8 +120,11 @@ export const {
     useCreatePersonMutation,
     useGetPersonMutation,
     useUploadPersonFaceMutation,
+    useCreateNewSessionMutation,
 
     // Query
-    useGetPersonsQuery
+    useGetPersonsQuery,
+    useGetSessionsQuery,
+    useGetSessionQuery
 
 } = gatewayApi;

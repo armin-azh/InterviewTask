@@ -1,6 +1,10 @@
-import {useState} from "react";
-
 import Dropzone ,{DropzoneOptions} from 'react-dropzone'
+
+// Components
+import Spinning from "@/components/Spinning";
+
+// Hooks
+import useCreateSession from "@/hooks/use-create-session";
 
 const dropOptions: DropzoneOptions = {
     accept: {
@@ -10,17 +14,15 @@ const dropOptions: DropzoneOptions = {
 }
 
 export default function Uploader(){
-    const [video,setVideo] = useState<string | undefined>(undefined);
 
-    if (video === undefined){
+    const {form, setForm, create, isLoading} = useCreateSession();
+
+    if (form.video === undefined){
 
         return <div className='w-full hover:cursor-pointer'>
             <Dropzone onDrop={acceptedFiles => {
                 const file = acceptedFiles[0];
-                if(file){
-                    const objectUrl = URL.createObjectURL(file);
-                    setVideo(objectUrl);
-                }
+                setForm({video: file})
             }} {...dropOptions}>
                 {({getRootProps, getInputProps}) => (
                     <div className='border-2 rounded-md p-10'>
@@ -36,20 +38,26 @@ export default function Uploader(){
 
     return <div className='flex flex-col gap-3'>
         <div className='border-2 border-blue-600 rounded-md overflow-hidden'>
-            <video controls={false} autoPlay={true} loop={true}>
-                <source src={video} type="video/mp4"/>
+            <video controls={false} autoPlay={true} loop={true} muted={true}>
+                <source src={URL.createObjectURL(form.video)} type="video/mp4"/>
             </video>
         </div>
         <div className='flex gap-2 justify-center'>
             <button
                 className="duration-200 bg-transparent text-red-600 border border-red-600 hover:ring-2 hover:ring-red-400 hover:bg-red-600 hover:text-white font-medium py-2 px-4 rounded-md shadow-lg w-32"
-                onClick={()=>setVideo(undefined)}
+                onClick={()=>setForm({video:undefined})}
+                disabled={isLoading}
             >
                 reset
             </button>
             <button
-                className="duration-200 bg-green-500 hover:ring-2 hover:ring-green-400 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md shadow-lg w-32">
-                Upload
+                className="duration-200 bg-green-500 hover:ring-2 hover:ring-green-400 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md shadow-lg w-32"
+                onClick={() => {
+                    create({});
+                }}
+                disabled={isLoading}
+            >
+                <Spinning condition={isLoading} onLoadingText={""} onCompleteText={"Upload"}/>
             </button>
         </div>
     </div>

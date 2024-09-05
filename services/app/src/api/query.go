@@ -36,7 +36,7 @@ func (server *Server) createQuery(c *fiber.Ctx) error {
 	prefix := uuid.New().String()
 	relativePath := filepath.Join(basePath, prefix+filepath.Ext(file.Filename))
 
-	filename := filepath.Join(absolutePath, file.Filename)
+	filename := filepath.Join(absolutePath, prefix+filepath.Ext(file.Filename))
 
 	if err := c.SaveFile(file, filename); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to save the video"})
