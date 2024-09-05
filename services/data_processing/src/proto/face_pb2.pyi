@@ -36,7 +36,7 @@ class Keypoint(_message.Message):
     def __init__(self, x: _Optional[int] = ..., y: _Optional[int] = ...) -> None: ...
 
 class Face(_message.Message):
-    __slots__ = ("bbox", "hasHP", "timestamp", "pose", "embedding", "track_id", "person_id", "keypoints")
+    __slots__ = ("bbox", "hasHP", "timestamp", "pose", "embedding", "track_id", "person_id", "keypoints", "similarity")
     BBOX_FIELD_NUMBER: _ClassVar[int]
     HASHP_FIELD_NUMBER: _ClassVar[int]
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
@@ -45,6 +45,7 @@ class Face(_message.Message):
     TRACK_ID_FIELD_NUMBER: _ClassVar[int]
     PERSON_ID_FIELD_NUMBER: _ClassVar[int]
     KEYPOINTS_FIELD_NUMBER: _ClassVar[int]
+    SIMILARITY_FIELD_NUMBER: _ClassVar[int]
     bbox: BBox
     hasHP: bool
     timestamp: int
@@ -53,4 +54,5 @@ class Face(_message.Message):
     track_id: int
     person_id: str
     keypoints: _containers.RepeatedCompositeFieldContainer[Keypoint]
-    def __init__(self, bbox: _Optional[_Union[BBox, _Mapping]] = ..., hasHP: bool = ..., timestamp: _Optional[int] = ..., pose: _Optional[_Union[Angle, _Mapping]] = ..., embedding: _Optional[_Iterable[float]] = ..., track_id: _Optional[int] = ..., person_id: _Optional[str] = ..., keypoints: _Optional[_Iterable[_Union[Keypoint, _Mapping]]] = ...) -> None: ...
+    similarity: float
+    def __init__(self, bbox: _Optional[_Union[BBox, _Mapping]] = ..., hasHP: bool = ..., timestamp: _Optional[int] = ..., pose: _Optional[_Union[Angle, _Mapping]] = ..., embedding: _Optional[_Iterable[float]] = ..., track_id: _Optional[int] = ..., person_id: _Optional[str] = ..., keypoints: _Optional[_Iterable[_Union[Keypoint, _Mapping]]] = ..., similarity: _Optional[float] = ...) -> None: ...

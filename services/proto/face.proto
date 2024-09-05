@@ -28,4 +28,5 @@ message Face{
     int64 track_id = 6; 
     string person_id=7;
     repeated Keypoint keypoints=8;
+    float similarity = 9;
 }
