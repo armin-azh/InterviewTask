@@ -17,12 +17,19 @@ type Server struct {
 	producer  *kafka.Producer
 
 	enrollmentTopic string
+	sessionTopic    string
 }
 
 func NewServer(store sqlcmain.Store, config *common.Config, producer *kafka.Producer) *Server {
 
 	// Create new server
-	server := &Server{store: store, config: config, producer: producer, enrollmentTopic: "cmp.enrollment.image"}
+	server := &Server{
+		store:           store,
+		config:          config,
+		producer:        producer,
+		enrollmentTopic: "cmp.enrollment.image",
+		sessionTopic:    "cmp.session.videos",
+	}
 
 	app := fiber.New(fiber.Config{
 		AppName: "App Gateway Service",
@@ -45,12 +52,6 @@ func NewServer(store sqlcmain.Store, config *common.Config, producer *kafka.Prod
 	person.Get("", server.getPersonList)                         // Get person list
 	person.Get("/person/:id", server.getPerson)                  // Get person by prime
 	person.Post("/person/:id/upload", server.uploadImagToPerson) // Get person by prime
-
-	// Enrollment
-	enroll := v1.Group("/enrollments")
-	enroll.Post("", server.createEnroll)            // Create new enrollment
-	enroll.Get("", server.getEnrollList)            // Get enrollments
-	enroll.Get("/enrollment/:pk", server.getEnroll) // Get enrollment instance
 
 	// Query
 	query := v1.Group("/queries")

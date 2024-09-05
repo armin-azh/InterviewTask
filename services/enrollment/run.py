@@ -14,12 +14,8 @@ from argparse import Namespace, ArgumentParser
 from PIL import Image
 import io
 
-import grpc
-
 from src.utils import get_env
 from src.proto.enrollment_pb2 import Person
-from src.proto.detection_srv_pb2_grpc import DetectionServiceStub
-from src.proto.detection_srv_pb2 import DetectSingleImageRequest, Config
 from src.rpc.detection import DetectionRPC
 
 from confluent_kafka import Consumer, KafkaError

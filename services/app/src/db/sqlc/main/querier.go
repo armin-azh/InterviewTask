@@ -11,8 +11,11 @@ import (
 type Querier interface {
 	CreateNewFace(ctx context.Context, personID int32, path string) (Face, error)
 	CreatePerson(ctx context.Context, prime string, firstName string, lastName string) (Person, error)
+	CreateSession(ctx context.Context, prime string, videoPath string) (Session, error)
 	GetPersonByPrime(ctx context.Context, prime string) (Person, error)
 	GetPersonList(ctx context.Context, limit int32, offset int32) ([]Person, error)
+	GetSessionByPrime(ctx context.Context, prime string) (Session, error)
+	GetSessionList(ctx context.Context, limit int32, offset int32) ([]Session, error)
 }
 
 var _ Querier = (*Queries)(nil)
