@@ -210,3 +210,11 @@ services:
 
     volumes:
       - ./storage/media:/home/app/media
+
+  # frontend:
+  #   build:
+  #     context: ./services/frontend
+  #     dockerfile: Dockerfile
+
+  #   ports:
+  #     - "3000:3000"

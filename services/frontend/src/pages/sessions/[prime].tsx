@@ -20,8 +20,7 @@ export default function Session() {
     const params = router.query;
     const prime = params.prime as string;
 
-    const {data, isLoading} = useGetResultsQuery({prime,...page});
-    console.log(data)
+    const {data, isLoading} = useGetResultsQuery({prime,...page})
     
     return <div className='h-screen bg-gray-100'>
         <Head><title>Face Recognition Portal | Session</title></Head>
@@ -63,9 +62,9 @@ export default function Session() {
                             <tbody>
 
                             {
-                                data?.data.results.map((item) => {
+                                data?.data.results!==null?data?.data.results.map((item) => {
                                     return <Item data={item} key={nanoid()}/>
-                                })
+                                }):null
                             }
                             </tbody>
                         </table>

@@ -119,9 +119,9 @@ def main(args:Namespace)->None:
                 ids, keep = tracker.update(np.array(embeds))
 
                 forwarding = DataForwarding(image=img_bytes,id=query.id, prime=query.prime)
-                for idx in keep:
+                for t,idx in enumerate(keep):
                     face = faces[idx]
-                    face.track_id = int(ids[idx].squeeze())
+                    face.track_id = int(ids[t].squeeze())
                     forwarding.faces.append(face)
 
                 producer.produce("cmp.forwarding.results", forwarding.SerializeToString())
