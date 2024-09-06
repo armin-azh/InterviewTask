@@ -23,7 +23,7 @@ This is the main data model which is used to store information and used in <u>Ap
 * nvidia docker container
 ### Clone the project
 ```bash
-git clone 
+git clone https://github.com/armin-azh/InterviewTask.git
 ```
 
 ### Download models
