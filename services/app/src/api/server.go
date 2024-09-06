@@ -7,6 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"interview.com/app/src/common"
 	sqlcmain "interview.com/app/src/db/sqlc/main"
+	"path/filepath"
 )
 
 type Server struct {
@@ -42,6 +43,8 @@ func NewServer(store sqlcmain.Store, config *common.Config, producer *kafka.Prod
 		AllowMethods:     "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS",
 		AllowCredentials: true,
 	}))
+
+	app.Static("/media", filepath.Join(server.config.MediaDir, "thumbnails"))
 
 	api := app.Group("/api")
 	v1 := api.Group("/v1")

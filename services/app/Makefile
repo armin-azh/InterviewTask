@@ -8,3 +8,6 @@ migratedown:
 
 dev:
 	go run src/server.go
+
+forwarding:
+	go run src/data_forwarding.go

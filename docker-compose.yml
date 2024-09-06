@@ -98,6 +98,32 @@ services:
       - postgres
       - kafka
 
+  forwarding:
+    build:
+      dockerfile: Dockerfile
+      context: ./services/app
+
+    entrypoint: ["/app/wait-for", "postgres:5432", "kafka:9092", "--","/app/start_forwarding.sh"]
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      - DEBUG=false
+      - PORT=8080
+      - HOST=0.0.0.0
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres?sslmode=disable
+      - MEDIA_DIR=/app/media
+      - KAFKA_BOOTSTRAP_SERVER=kafka:9092
+
+    networks:
+      - kafka-tier
+      - db_tier
+
+    depends_on:
+      - postgres
+      - kafka
+
   detection:
     build:
       dockerfile: Dockerfile
@@ -122,12 +148,16 @@ services:
       dockerfile: Dockerfile
       context: ./services/data_processing
 
+    environment:
+      - MEDIA_DIR=/home/app/media
+
     networks:
       - emb-rpc-tier
     ports:
       - "50053:50053"
     volumes:
       - ./models/data_processing:/home/app/models
+      - ./storage/media:/home/app/media
     deploy:
       resources:
         reservations:
@@ -160,7 +190,6 @@ services:
     volumes:
       - ./storage/media:/home/app/media
 
-      
   query:
     build:
       context: ./services/query

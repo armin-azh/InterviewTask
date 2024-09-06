@@ -7,6 +7,7 @@ package sqlcmain
 
 import (
 	"context"
+	"database/sql"
 )
 
 const createSession = `-- name: CreateSession :one
@@ -47,7 +48,7 @@ func (q *Queries) GetSessionByPrime(ctx context.Context, prime string) (Session,
 }
 
 const getSessionList = `-- name: GetSessionList :many
-SELECT id, prime, video_path, created_at, ended_at FROM "Session" ORDER BY id LIMIT $1 OFFSET $2
+SELECT id, prime, video_path, created_at, ended_at FROM "Session" ORDER BY id DESC LIMIT $1 OFFSET $2
 `
 
 func (q *Queries) GetSessionList(ctx context.Context, limit int32, offset int32) ([]Session, error) {
@@ -77,4 +78,21 @@ func (q *Queries) GetSessionList(ctx context.Context, limit int32, offset int32)
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateSessionEndTime = `-- name: UpdateSessionEndTime :one
+UPDATE "Session" SET ended_at = $1 WHERE id = $2 RETURNING id, prime, video_path, created_at, ended_at
+`
+
+func (q *Queries) UpdateSessionEndTime(ctx context.Context, endedAt sql.NullTime, iD int64) (Session, error) {
+	row := q.db.QueryRowContext(ctx, updateSessionEndTime, endedAt, iD)
+	var i Session
+	err := row.Scan(
+		&i.ID,
+		&i.Prime,
+		&i.VideoPath,
+		&i.CreatedAt,
+		&i.EndedAt,
+	)
+	return i, err
 }

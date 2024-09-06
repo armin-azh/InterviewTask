@@ -140,3 +140,59 @@ func (server *Server) getQuery(c *fiber.Ctx) error {
 		"data": session,
 	})
 }
+
+func (server *Server) getResultBySessionId(c *fiber.Ctx) error {
+	log.Info("Get result by session id")
+	id := c.Params("id")
+
+	params := serializers.QueryParamSerializer{
+		Page:     1,
+		PageSize: 10,
+	}
+
+	if err := c.QueryParser(&params); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Failed to parse query parameters",
+		})
+	}
+
+	session, err := server.store.GetSessionByPrime(context.Background(), id)
+	if err != nil {
+		var pgErr *pq.Error
+		if errors.As(err, &pgErr) {
+			log.Info(pgErr.Code.Name())
+			return &fiber.Error{
+				Code:    fiber.ErrNotFound.Code,
+				Message: fmt.Sprintf("%v", err),
+			}
+		}
+		return &fiber.Error{
+			Code:    fiber.ErrBadRequest.Code,
+			Message: "Bad request happened",
+		}
+	}
+
+	results, err := server.store.GetResultListBySessionId(context.Background(), int32(session.ID), params.PageSize, (params.Page-1)*params.PageSize)
+	if err != nil {
+		var pgErr *pq.Error
+		if errors.As(err, &pgErr) {
+			log.Info(pgErr.Code.Name())
+			return &fiber.Error{
+				Code:    fiber.ErrNotFound.Code,
+				Message: fmt.Sprintf("%v", err),
+			}
+		}
+		return &fiber.Error{
+			Code:    fiber.ErrBadRequest.Code,
+			Message: "Bad request happened",
+		}
+	}
+
+	return c.JSON(fiber.Map{
+		"data": fiber.Map{
+			"results": results,
+			"session": session,
+		},
+	})
+
+}

@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package face;
+option go_package="proto/face";
 
 message Angle{
     float pitch = 1;

@@ -91,10 +91,10 @@ class DataProcessingInferenceService(EmbeddingService):
             
             for i, face in enumerate(request.faces):
                 embed = embeds[i]
-                face_img = faces
+                face_img = faces[i]
                 filename = f"{str(uuid4())}.jpg"
 
-                cv2.imwrite(str(self.save_path.joinpath(filename)), face_img)
+                cv2.imwrite(str(self.save_path.joinpath(filename)), cv2.cvtColor(face_img, cv2.COLOR_RGB2BGR))
 
 
                 n_ids, n_dists = self.index.get_nns_by_vector(embed, 1, search_k=-1, include_distances=True)

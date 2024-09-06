@@ -24,7 +24,7 @@ CREATE TABLE "Result" (
                           "id" BIGSERIAL PRIMARY KEY,
                           "session_id" int NOT NULL,
                           "person_id" int NOT NULL,
-                          "thumbnail_path" char NOT NULL,
+                          "thumbnail_path" varchar(1024) NOT NULL,
                           "similarity" float NOT NULL
 );
 

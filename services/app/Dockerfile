@@ -6,19 +6,23 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 RUN CGO_ENABLED=1 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o server src/server.go
+RUN CGO_ENABLED=1 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o forwarding src/data_forwarding.go
 RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.17.0/migrate.linux-amd64.tar.gz | tar xvz
 
 FROM alpine:3.20
 WORKDIR /app
 COPY --from=builder /app/server .
+COPY --from=builder /app/forwarding .
 COPY --from=builder /app/migrate .
 COPY app.env .
 COPY src/db/migrations ./migrations
 COPY start.sh .
+COPY start_forwarding.sh .
 COPY wait-for .
 
 RUN chmod +x /app/wait-for
 RUN chmod +x /app/start.sh
+RUN chmod +x /app/start_forwarding.sh
 
 EXPOSE 8080
 CMD ["/app/server"]

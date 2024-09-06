@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package com.interview.forwarding;
+package forwarding;
 option go_package="proto/forwarding";
 
 import public "face.proto";
