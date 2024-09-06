@@ -26,13 +26,16 @@ import face_pb2 as face__pb2
 
 from face_pb2 import *
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15\x64\x61ta_forwarding.proto\x12\x18\x63om.interview.forwarding\x1a\nface.proto\"P\n\x0e\x44\x61taForwarding\x12\r\n\x05image\x18\x01 \x01(\x0c\x12\x14\n\x05\x66\x61\x63\x65s\x18\x02 \x03(\x0b\x32\x05.Face\x12\n\n\x02id\x18\x03 \x01(\x05\x12\r\n\x05prime\x18\x04 \x01(\tP\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15\x64\x61ta_forwarding.proto\x12\x18\x63om.interview.forwarding\x1a\nface.proto\"P\n\x0e\x44\x61taForwarding\x12\r\n\x05image\x18\x01 \x01(\x0c\x12\x14\n\x05\x66\x61\x63\x65s\x18\x02 \x03(\x0b\x32\x05.Face\x12\n\n\x02id\x18\x03 \x01(\x05\x12\r\n\x05prime\x18\x04 \x01(\t\"A\n\x14\x44\x61taForwardingStatus\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05prime\x18\x02 \x01(\t\x12\x0e\n\x06status\x18\x03 \x01(\x08\x42\x12Z\x10proto/forwardingP\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'data_forwarding_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
-  DESCRIPTOR._loaded_options = None
+  _globals['DESCRIPTOR']._loaded_options = None
+  _globals['DESCRIPTOR']._serialized_options = b'Z\020proto/forwarding'
   _globals['_DATAFORWARDING']._serialized_start=63
   _globals['_DATAFORWARDING']._serialized_end=143
+  _globals['_DATAFORWARDINGSTATUS']._serialized_start=145
+  _globals['_DATAFORWARDINGSTATUS']._serialized_end=210
 # @@protoc_insertion_point(module_scope)

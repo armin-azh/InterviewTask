@@ -1,6 +1,9 @@
 import logging
+from uuid import uuid4
 import io
 import onnxruntime as ort
+from pathlib import Path
+import cv2
 
 ort.set_default_logger_severity(3)
 
@@ -19,10 +22,12 @@ logger = logging.getLogger('rpc')
 
 class DataProcessingInferenceService(EmbeddingService):
 
-    def __init__(self, model_file:str) -> None:
+    def __init__(self, model_file:str, save_path:Path) -> None:
         super().__init__()
         self.model = Embedding(model_file)
         self.registery = None
+        self.save_path = save_path.joinpath('thumbnails')
+        self.save_path.mkdir(parents=True, exist_ok=True)
 
         self.ids = []
         self.embeds = []
@@ -82,11 +87,16 @@ class DataProcessingInferenceService(EmbeddingService):
         keypoints = np.array(keypoints)
 
         if len(keypoints) > 0 and self.index is not None:
-            embeds,_ = self.model.get(image, keypoints)
+            embeds,faces = self.model.get(image, keypoints)
             
             for i, face in enumerate(request.faces):
                 embed = embeds[i]
-                
+                face_img = faces
+                filename = f"{str(uuid4())}.jpg"
+
+                cv2.imwrite(str(self.save_path.joinpath(filename)), face_img)
+
+
                 n_ids, n_dists = self.index.get_nns_by_vector(embed, 1, search_k=-1, include_distances=True)
                 n_ids = n_ids[0]
                 _, max_dists = self.index.get_nns_by_vector(self.index.get_item_vector(n_ids), 1, search_k=-1,
@@ -97,5 +107,6 @@ class DataProcessingInferenceService(EmbeddingService):
                 face.embedding[:] = embed
                 face.person_id = person_id
                 face.similarity = norm_dists
+                face.thumbnail = f"{self.save_path.stem}/{filename}"
 
         return dpb.GetEmbeddingResponse(faces=request.faces)

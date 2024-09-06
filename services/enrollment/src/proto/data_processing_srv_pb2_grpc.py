@@ -41,7 +41,7 @@ class EmbeddingServiceStub(object):
                 _registered_method=True)
         self.GetEmbedding = channel.unary_unary(
                 '/com.interview.embedding.EmbeddingService/GetEmbedding',
-                request_serializer=data__processing__srv__pb2.GetEmbeddingResponse.SerializeToString,
+                request_serializer=data__processing__srv__pb2.GetEmbeddingRequest.SerializeToString,
                 response_deserializer=data__processing__srv__pb2.GetEmbeddingResponse.FromString,
                 _registered_method=True)
 
@@ -71,7 +71,7 @@ def add_EmbeddingServiceServicer_to_server(servicer, server):
             ),
             'GetEmbedding': grpc.unary_unary_rpc_method_handler(
                     servicer.GetEmbedding,
-                    request_deserializer=data__processing__srv__pb2.GetEmbeddingResponse.FromString,
+                    request_deserializer=data__processing__srv__pb2.GetEmbeddingRequest.FromString,
                     response_serializer=data__processing__srv__pb2.GetEmbeddingResponse.SerializeToString,
             ),
     }
@@ -127,7 +127,7 @@ class EmbeddingService(object):
             request,
             target,
             '/com.interview.embedding.EmbeddingService/GetEmbedding',
-            data__processing__srv__pb2.GetEmbeddingResponse.SerializeToString,
+            data__processing__srv__pb2.GetEmbeddingRequest.SerializeToString,
             data__processing__srv__pb2.GetEmbeddingResponse.FromString,
             options,
             channel_credentials,

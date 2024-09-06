@@ -21,3 +21,13 @@ class DataForwarding(_message.Message):
     id: int
     prime: str
     def __init__(self, image: _Optional[bytes] = ..., faces: _Optional[_Iterable[_Union[_face_pb2.Face, _Mapping]]] = ..., id: _Optional[int] = ..., prime: _Optional[str] = ...) -> None: ...
+
+class DataForwardingStatus(_message.Message):
+    __slots__ = ("id", "prime", "status")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    PRIME_FIELD_NUMBER: _ClassVar[int]
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    prime: str
+    status: bool
+    def __init__(self, id: _Optional[int] = ..., prime: _Optional[str] = ..., status: bool = ...) -> None: ...

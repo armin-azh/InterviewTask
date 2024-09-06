@@ -27,6 +27,7 @@ async def main(args: Namespace)->None:
 
     host = get_env('HOST', '0.0.0.0')
     port = get_env('PORT', 50053)
+    save_dir = Path(get_env('MEDIA_DIR', './media'))
 
     embed_weights = './models/embedding.onnx'
     
@@ -34,7 +35,7 @@ async def main(args: Namespace)->None:
     server = grpc.aio.server()
 
     # Add service 
-    add_EmbeddingServiceServicer_to_server(DataProcessingInferenceService(model_file=embed_weights), server)
+    add_EmbeddingServiceServicer_to_server(DataProcessingInferenceService(model_file=embed_weights, save_path=save_dir), server)
 
     address = f"{host}:{port}"
 

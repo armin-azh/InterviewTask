@@ -17,7 +17,7 @@ class DetectionRPC:
     def request(self,image)->DetectSingleImageResponse:
         request = DetectSingleImageRequest(
             image=image,
-            config= Config(hasHP=False)
+            config= Config(hasHP=True)
         )
 
         return self.stub.DetectSingleImage(request)

@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package com.interview.forwarding;
+option go_package="proto/forwarding";
 
 import public "face.proto";
 
@@ -11,6 +12,8 @@ message DataForwarding{
     string prime = 4;
 }
 
-
-
-
+message DataForwardingStatus{
+    int32 id = 1;
+    string prime = 2;
+    bool status = 3;
+}

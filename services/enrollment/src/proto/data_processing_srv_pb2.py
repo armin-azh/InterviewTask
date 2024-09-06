@@ -26,7 +26,7 @@ import face_pb2 as face__pb2
 
 from face_pb2 import *
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19\x64\x61ta_processing_srv.proto\x12\x17\x63om.interview.embedding\x1a\nface.proto\":\n\x13RegisterFaceRequest\x12\r\n\x05image\x18\x01 \x01(\x0c\x12\x14\n\x05\x66\x61\x63\x65s\x18\x02 \x03(\x0b\x32\x05.Face\"\x16\n\x14RegisterFaceResponse\":\n\x13GetEmbeddingRequest\x12\r\n\x05image\x18\x01 \x01(\x0c\x12\x14\n\x05\x66\x61\x63\x65s\x18\x02 \x03(\x0b\x32\x05.Face\",\n\x14GetEmbeddingResponse\x12\x14\n\x05\x66\x61\x63\x65s\x18\x01 \x03(\x0b\x32\x05.Face2\xed\x01\n\x10\x45mbeddingService\x12i\n\x08Register\x12,.com.interview.embedding.RegisterFaceRequest\x1a-.com.interview.embedding.RegisterFaceResponse\"\x00\x12n\n\x0cGetEmbedding\x12-.com.interview.embedding.GetEmbeddingResponse\x1a-.com.interview.embedding.GetEmbeddingResponse\"\x00P\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19\x64\x61ta_processing_srv.proto\x12\x17\x63om.interview.embedding\x1a\nface.proto\":\n\x13RegisterFaceRequest\x12\r\n\x05image\x18\x01 \x01(\x0c\x12\x14\n\x05\x66\x61\x63\x65s\x18\x02 \x03(\x0b\x32\x05.Face\"\x16\n\x14RegisterFaceResponse\":\n\x13GetEmbeddingRequest\x12\r\n\x05image\x18\x01 \x01(\x0c\x12\x14\n\x05\x66\x61\x63\x65s\x18\x02 \x03(\x0b\x32\x05.Face\",\n\x14GetEmbeddingResponse\x12\x14\n\x05\x66\x61\x63\x65s\x18\x01 \x03(\x0b\x32\x05.Face2\xec\x01\n\x10\x45mbeddingService\x12i\n\x08Register\x12,.com.interview.embedding.RegisterFaceRequest\x1a-.com.interview.embedding.RegisterFaceResponse\"\x00\x12m\n\x0cGetEmbedding\x12,.com.interview.embedding.GetEmbeddingRequest\x1a-.com.interview.embedding.GetEmbeddingResponse\"\x00P\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -42,5 +42,5 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_GETEMBEDDINGRESPONSE']._serialized_start=210
   _globals['_GETEMBEDDINGRESPONSE']._serialized_end=254
   _globals['_EMBEDDINGSERVICE']._serialized_start=257
-  _globals['_EMBEDDINGSERVICE']._serialized_end=494
+  _globals['_EMBEDDINGSERVICE']._serialized_end=493
 # @@protoc_insertion_point(module_scope)

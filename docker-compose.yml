@@ -163,7 +163,7 @@ services:
       
   query:
     build:
-      context: ./service/query
+      context: ./services/query
       dockerfile: Dockerfile
 
     environment:
@@ -171,7 +171,7 @@ services:
       - EM_RPC_HOST=embedding:50053
       - KAFKA_HOST= kafka:9092
       - MEDIA_ROOT=/home/app/media
-      
+
     networks: 
       - emb-rpc-tier
       - det-rpc-tier

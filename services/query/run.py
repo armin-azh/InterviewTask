@@ -18,7 +18,7 @@ from argparse import Namespace, ArgumentParser
 
 from src.utils import get_env
 from src.proto.query_pb2 import Query
-from src.proto.data_forwarding_pb2 import DataForwarding
+from src.proto.data_forwarding_pb2 import DataForwarding, DataForwardingStatus
 from src.rpc.detection import DetectionRPC
 from src.rpc.embedding import EmbeddingRPC
 from src.tracker import FaceTracker
@@ -27,6 +27,12 @@ from confluent_kafka import Consumer, KafkaError, Producer
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("query")
+
+
+# Angles
+PITCH = 30.
+YAW = 30.
+ROLL = 30.
 
 def main(args:Namespace)->None:
     
@@ -93,27 +99,37 @@ def main(args:Namespace)->None:
             det_response = det_rpc.request(img_bytes)
 
             # Filter Faces
-            # logger.info(det_response)
+            faces = []
+            for face in det_response.faces:
+                if abs(face.pose.pitch)<=PITCH and abs(face.pose.yaw) <= YAW and abs(face.pose.roll) <= ROLL:
+                    faces.append(face)
 
             # Get embeddings and pull to vector db
-            em_response = em_rpc.request(img_bytes, det_response.faces)
+            if len(faces) > 0:
+ 
+                em_response = em_rpc.request(img_bytes, faces)
 
-            faces = em_response.faces
+                faces = em_response.faces
 
-            embeds = []
+                embeds = []
 
-            for face in faces:
-                embeds.append(list(face.embedding))
+                for face in faces:
+                    embeds.append(list(face.embedding))
 
-            ids, keep = tracker.update(np.array(embeds))
+                ids, keep = tracker.update(np.array(embeds))
 
-            forwarding = DataForwarding(image=img_bytes,id=query.id, prime=query.prime)
-            for idx in keep:
-                face = faces[idx]
-                face.track_id = int(ids[idx].squeeze())
-                forwarding.faces.append(face)
+                forwarding = DataForwarding(image=img_bytes,id=query.id, prime=query.prime)
+                for idx in keep:
+                    face = faces[idx]
+                    face.track_id = int(ids[idx].squeeze())
+                    forwarding.faces.append(face)
 
-            producer.produce("cmp.forwarding.results", forwarding.SerializeToString())
+                producer.produce("cmp.forwarding.results", forwarding.SerializeToString())
+
+        # Finalize the request session
+        status = DataForwardingStatus(id=query.id, prime=query.prime, status=True)
+        producer.produce("cmp.forwarding.finalize", status.SerializeToString())
+
         producer.flush()
     consumer.close()
 

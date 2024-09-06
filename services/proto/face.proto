@@ -29,4 +29,5 @@ message Face{
     string person_id=7;
     repeated Keypoint keypoints=8;
     float similarity = 9;
+    string thumbnail = 10;
 }
