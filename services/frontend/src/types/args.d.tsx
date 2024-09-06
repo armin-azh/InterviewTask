@@ -11,3 +11,7 @@ export interface PaginationArgs{
     page?: number;
     pageSize?: number;
 }
+
+export interface PrimeAndPageArgs extends PaginationArgs{
+    prime: string
+}

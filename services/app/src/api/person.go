@@ -109,6 +109,38 @@ func (server *Server) getPerson(c *fiber.Ctx) error {
 	})
 }
 
+func (server *Server) getPersonById(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		return &fiber.Error{
+			Code:    fiber.ErrBadRequest.Code,
+			Message: "Invalid id parameter",
+		}
+	}
+
+	log.Info("get person by id")
+
+	person, err := server.store.GetPersonById(context.Background(), int64(id))
+	if err != nil {
+		var pgErr *pq.Error
+		if errors.As(err, &pgErr) {
+			log.Info(pgErr.Code.Name())
+			return &fiber.Error{
+				Code:    fiber.ErrNotFound.Code,
+				Message: fmt.Sprintf("%v", err),
+			}
+		}
+		return &fiber.Error{
+			Code:    fiber.ErrBadRequest.Code,
+			Message: "Bad request happened",
+		}
+	}
+
+	return c.JSON(fiber.Map{
+		"data": person,
+	})
+}
+
 func (server *Server) uploadImagToPerson(c *fiber.Ctx) error {
 	id := c.Params("id")
 

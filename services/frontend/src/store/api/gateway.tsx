@@ -9,7 +9,8 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {DataResponse, ListResponse} from "@/types/response.d";
 import {Person} from "@/types/models/person.d";
 import {Session} from "@/types/models/session.d";
-import {PaginationArgs} from "@/types/args.d";
+import {PaginationArgs, PrimeAndPageArgs} from "@/types/args.d";
+import {Result} from "@/types/models/result.d";
 
 
 const baseQuery = fetchBaseQuery(
@@ -112,6 +113,37 @@ export const gatewayApi = createApi({
                 return {url: `/api/v1/persons?${queryString}`}
             }
         }),
+
+        // Get Result Session
+        getResults: builder.query<DataResponse<{session: Session,results:Result[]}>, PrimeAndPageArgs>({
+            keepUnusedDataFor: 1,
+            query: ({page, pageSize, prime})=>{
+
+                // Make Search queries
+                const query = new URLSearchParams();
+
+                if(typeof page === 'string'){
+                    query.append('page', page);
+                }
+
+                if(typeof pageSize === 'string'){
+                    query.append('page_size', pageSize);
+                }
+
+                // Get query in string
+                const queryString = query.toString();
+
+                return {url: `/api/v1/queries/query/${prime}/results?${queryString}`}
+            }
+        }),
+
+        // Get person by id
+        getPersonById: builder.query<DataResponse<Person>,{id:number}>({
+            keepUnusedDataFor: 1,
+            query:({id})=>{
+                return {url: `/api/v1/persons/personId/${id}`}
+            }
+        }),
     })
 })
 
@@ -125,6 +157,8 @@ export const {
     // Query
     useGetPersonsQuery,
     useGetSessionsQuery,
-    useGetSessionQuery
+    useGetSessionQuery,
+    useGetResultsQuery,
+    useGetPersonByIdQuery,
 
 } = gatewayApi;

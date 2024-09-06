@@ -32,6 +32,23 @@ func (q *Queries) CreatePerson(ctx context.Context, prime string, firstName stri
 	return i, err
 }
 
+const getPersonById = `-- name: GetPersonById :one
+SELECT id, prime, first_name, last_name, created_at FROM  "Person" WHERE id = $1 LIMIT 1
+`
+
+func (q *Queries) GetPersonById(ctx context.Context, id int64) (Person, error) {
+	row := q.db.QueryRowContext(ctx, getPersonById, id)
+	var i Person
+	err := row.Scan(
+		&i.ID,
+		&i.Prime,
+		&i.FirstName,
+		&i.LastName,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
 const getPersonByPrime = `-- name: GetPersonByPrime :one
 SELECT id, prime, first_name, last_name, created_at FROM "Person"
 WHERE prime = $1 LIMIT 1

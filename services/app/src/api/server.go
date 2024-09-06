@@ -55,12 +55,14 @@ func NewServer(store sqlcmain.Store, config *common.Config, producer *kafka.Prod
 	person.Get("", server.getPersonList)                         // Get person list
 	person.Get("/person/:id", server.getPerson)                  // Get person by prime
 	person.Post("/person/:id/upload", server.uploadImagToPerson) // Get person by prime
+	person.Get("/personId/:id", server.getPersonById)            // Get person by id
 
 	// Query
 	query := v1.Group("/queries")
-	query.Post("", server.createQuery)       // Create new query
-	query.Get("", server.getQueryList)       // Get query list
-	query.Get("/query/:id", server.getQuery) // Get query instance
+	query.Post("", server.createQuery)                           // Create new query
+	query.Get("", server.getQueryList)                           // Get query list
+	query.Get("/query/:id", server.getQuery)                     // Get query instance
+	query.Get("/query/:id/results", server.getResultBySessionId) // Get results by session id
 
 	server.app = app
 

@@ -14,6 +14,7 @@ type Querier interface {
 	CreatePerson(ctx context.Context, prime string, firstName string, lastName string) (Person, error)
 	CreateResult(ctx context.Context, sessionID int32, personID int32, thumbnailPath string, similarity float64) (Result, error)
 	CreateSession(ctx context.Context, prime string, videoPath string) (Session, error)
+	GetPersonById(ctx context.Context, id int64) (Person, error)
 	GetPersonByPrime(ctx context.Context, prime string) (Person, error)
 	GetPersonList(ctx context.Context, limit int32, offset int32) ([]Person, error)
 	GetResultListByPersonId(ctx context.Context, sessionID int32, limit int32, offset int32) ([]Result, error)
