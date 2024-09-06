@@ -2,12 +2,17 @@ import {useState} from "react";
 import Head from "next/head";
 import {useRouter} from "next/router";
 
+// Components
+import Item from "@/components/Sessions/Item";
+
 // Hooks
-import {useGetSessionQuery, useGetResultsQuery} from "@/store/api/gateway";
+import {useGetResultsQuery} from "@/store/api/gateway";
 
 // Types
 import {PaginationArgs} from "@/types/args.d";
 import {nanoid} from "nanoid";
+import moment from "moment";
+import Link from "next/link";
 
 export default function Session() {
     const [page,setPage] = useState<PaginationArgs>({page:1, pageSize:10});
@@ -34,29 +39,38 @@ export default function Session() {
 
             <div className='flex justify-center'>
                 <div className='flex flex-col justify-center pt-3 tracking-widest'>
-                    <div className="h-48 overflow-y-auto">
-                        <ul className="w-full divide-y divide-gray-200">
+                    <div className="relative overflow-x-auto rounded-lg">
+                        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+                            <thead className="text-xs text-white uppercase bg-blue-500">
+                            <tr>
+                                <th scope="col" className="px-6 py-3">
+                                    Image
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Similarity
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Status
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Person
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
                             {
                                 data?.data.results.map((item) => {
-                                    // const objectUrl = URL.createObjectURL(image);
-                                    const url = new URL(item.thumbnail_path.replace("thumbnails", "media"), process.env.NEXT_PUBLIC_GW_URL || "http://localhost:8080").toString();
-                                    return <li className="pb-3 sm:pb-4" key={nanoid()}>
-                                        <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                                            <div className="flex-shrink-0">
-                                                <img className="w-8 h-8 rounded-full" src={url} alt="Neil image"/>
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-medium text-gray-900 truncate">
-                                                    {item.similarity}
-                                                </p>
-                                            </div>
-
-                                        </div>
-                                    </li>
+                                    return <Item data={item} key={nanoid()}/>
                                 })
                             }
-                        </ul>
+                            </tbody>
+                        </table>
                     </div>
+
                 </div>
             </div>
         </div>

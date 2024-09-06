@@ -15,7 +15,7 @@ import {Result} from "@/types/models/result.d";
 
 const baseQuery = fetchBaseQuery(
     {
-        baseUrl: `${process.env.NEXT_PUBLIC_GW_URL}`,
+        baseUrl: `${process.env.NEXT_PUBLIC_GW_URL || "http://localhost:8080"}`,
         credentials: 'include'
     }
 )
