@@ -53,4 +53,4 @@ Note: ports like 3000, 8080, and 9093 will be used for services so they shouldn`
 - [ ] Send one face instance per person with same track ID in incomming video
 
 ### Demo
-You can download following [Link](URL "Optional Title") to see a brief demo.
+You can download following [Link](URL "https://drive.google.com/file/d/1IhIAJNRlJni-L00Pi0htSTCZXAemKwrj/view?usp=drive_link") to see a brief demo.
